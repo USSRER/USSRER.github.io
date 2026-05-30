@@ -1,24 +1,29 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { useLang } from '../context/LanguageContext'
+import LangToggle from '../components/LangToggle'
+import t from '../i18n/translations'
 import './LlmTech.css'
-
-const tocItems = [
-  { id: 'overview', label: 'Overview' },
-  { id: 'vllm-intro', label: 'vLLM' },
-  { id: 'vllm-paged-attention', label: '   PagedAttention' },
-  { id: 'vllm-continuous-batching', label: '   Continuous Batching' },
-  { id: 'vllm-v1-arch', label: '   v1 Architecture' },
-  { id: 'vllm-performance', label: '   Performance' },
-  { id: 'lmcache-intro', label: 'LMCache' },
-  { id: 'lmcache-arch', label: '   Cache Architecture' },
-  { id: 'lmcache-features', label: '   Key Features' },
-  { id: 'lmcache-performance', label: '   Performance' },
-  { id: 'lmcache-integration', label: '   Integration' },
-  { id: 'references', label: 'References' },
-]
 
 function LlmTech() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const { lang } = useLang()
+  const tr = t[lang].tech
+
+  const tocItems = [
+    { id: 'overview', label: tr.tocOverview },
+    { id: 'vllm-intro', label: tr.tocVllm },
+    { id: 'vllm-paged-attention', label: tr.tocPagedAttention },
+    { id: 'vllm-continuous-batching', label: tr.tocContinuousBatching },
+    { id: 'vllm-v1-arch', label: tr.tocV1Arch },
+    { id: 'vllm-performance', label: tr.tocPerformance },
+    { id: 'lmcache-intro', label: tr.tocLmcache },
+    { id: 'lmcache-arch', label: tr.tocCacheArch },
+    { id: 'lmcache-features', label: tr.tocKeyFeatures },
+    { id: 'lmcache-performance', label: tr.tocPerformance },
+    { id: 'lmcache-integration', label: tr.tocIntegration },
+    { id: 'references', label: tr.tocReferences },
+  ]
 
   const scrollTo = (id) => {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
@@ -28,6 +33,7 @@ function LlmTech() {
   return (
     <>
       <div className="hex-bg" />
+      <LangToggle />
 
       {/* Mobile toggle */}
       <button
@@ -45,53 +51,53 @@ function LlmTech() {
         <aside className={`tech-sidebar ${sidebarOpen ? 'open' : ''}`}>
           <div className="sidebar-inner">
             <Link to="/" className="back-link">
-              &larr;  BACK
+              {tr.backHome}
             </Link>
-            <h3 className="toc-heading">On This Page</h3>
+            <h3 className="toc-heading">{tr.tocHeading}</h3>
             <nav className="toc-nav">
               {tocItems.map(({ id, label }) => (
                 <button
                   key={id}
-                  className={`toc-link ${label.startsWith('   ') ? 'toc-sub' : 'toc-main'}`}
+                  className={`toc-link ${
+                    label === tr.tocOverview || label === tr.tocVllm || label === tr.tocLmcache
+                      ? 'toc-main' : 'toc-sub'
+                  }`}
                   onClick={() => scrollTo(id)}
                 >
-                  {label.trim()}
+                  {label}
                 </button>
               ))}
             </nav>
           </div>
         </aside>
 
-        {/* Overlay for mobile */}
+        {/* Overlay */}
         {sidebarOpen && (
           <div className="sidebar-overlay" onClick={() => setSidebarOpen(false)} />
         )}
 
         {/* Main Content */}
         <main className="tech-content">
-          <Link to="/" className="back-link top-back-link">&larr;  BACK TO HOME</Link>
+          <Link to="/" className="back-link top-back-link">{tr.backHomeTop}</Link>
 
           {/* ============ OVERVIEW ============ */}
           <section id="overview" className="section tech-section">
-            <h2 className="section-title">LLM Inference Technology</h2>
+            <h2 className="section-title">{tr.overviewTitle}</h2>
             <p className="tech-intro">
-              Large Language Model (LLM) inference has become a critical infrastructure component in the AI era.
-              This page introduces two key open-source technologies that significantly improve LLM serving efficiency:
-              <strong className="text-yellow"> vLLM</strong>, a high-throughput inference engine, and
-              <strong className="text-yellow"> LMCache</strong>, a KV cache acceleration layer.
+              {tr.overviewText}{' '}
+              <strong className="text-yellow">vLLM</strong>{' '}
+              {lang === 'zh' ? '高吞吐量推理引擎' : 'a high-throughput inference engine'}{' '}
+              {lang === 'zh' ? '和' : 'and'}{' '}
+              <strong className="text-yellow">LMCache</strong>{lang === 'zh' ? 'KV Cache 加速层' : 'a KV cache acceleration layer'}。
             </p>
           </section>
 
-          {/* ============ vLLM ============ */}
+          {/* ============ vLLM INTRO ============ */}
           <section id="vllm-intro" className="section tech-section">
-            <h2 className="section-title">vLLM: High-Throughput LLM Inference Engine</h2>
-
+            <h2 className="section-title">{tr.vllmTitle}</h2>
             <p className="tech-text">
-              <strong>vLLM</strong> is an open-source, high-throughput and memory-efficient inference engine
-              for large language models. Developed at UC Berkeley, it has become the most widely adopted
-              LLM serving framework in production environments.
+              <strong>vLLM</strong> {tr.vllmDesc}
             </p>
-
             <div className="tech-meta">
               <a
                 href="https://github.com/vllm-project/vllm"
@@ -101,116 +107,93 @@ function LlmTech() {
               >
                 GitHub: vllm-project/vllm
               </a>
-              <span className="tech-version">Latest: v0.7.3 (April 2026)</span>
+              <span className="tech-version">{tr.vllmVersion}</span>
             </div>
           </section>
 
-          {/* PagedAttention */}
+          {/* ============ PAGED ATTENTION ============ */}
           <section id="vllm-paged-attention" className="section tech-section">
-            <h3 className="tech-subtitle">PagedAttention</h3>
-
+            <h3 className="tech-subtitle">{tr.paTitle}</h3>
             <p className="tech-text">
-              vLLM's core innovation is <strong className="text-cyan">PagedAttention</strong>, which
-              borrows the virtual memory paging concept from operating systems to manage the KV cache
-              in LLM inference.
+              {tr.paDesc}{' '}
+              <strong className="text-cyan">PagedAttention</strong>{tr.paDesc2}
             </p>
-
             <ul className="tech-list">
-              <li><strong>Block-based memory management:</strong> KV cache is divided into fixed-size blocks
-                (typically 16 tokens per block) rather than stored in contiguous memory.</li>
-              <li><strong>Dynamic allocation:</strong> Blocks are allocated on-demand, not pre-reserved
-                for the maximum sequence length.</li>
-              <li><strong>Memory utilization:</strong> Improved from ~40% (traditional approach) to <span className="text-yellow">90%+</span>,
-                eliminating fragmentation.</li>
-              <li><strong>Memory sharing:</strong> Blocks can be shared across sequences, enabling efficient
-                parallel sampling and beam search with near-zero memory overhead.</li>
-              <li><strong>Multi-size page pools (v0.7.3):</strong> Supports 4/8/16 token block sizes,
-                reducing short-request memory waste by 75%.</li>
+              <li><strong>{lang === 'zh' ? '基于 Block 的内存管理：' : 'Block-based memory management: '}</strong>{tr.paItem1}</li>
+              <li><strong>{lang === 'zh' ? '动态分配：' : 'Dynamic allocation: '}</strong>{tr.paItem2}</li>
+              <li>{tr.paItem3} <span className="text-yellow">90%+</span>{tr.paItem3b}</li>
+              <li><strong>{lang === 'zh' ? '内存共享：' : 'Memory sharing: '}</strong>{tr.paItem4}</li>
+              <li><strong>{lang === 'zh' ? '多尺寸页池（v0.7.3）：' : 'Multi-size page pools (v0.7.3): '}</strong>{tr.paItem5}</li>
             </ul>
           </section>
 
-          {/* Continuous Batching */}
+          {/* ============ CONTINUOUS BATCHING ============ */}
           <section id="vllm-continuous-batching" className="section tech-section">
-            <h3 className="tech-subtitle">Continuous Batching</h3>
-
+            <h3 className="tech-subtitle">{tr.cbTitle}</h3>
             <p className="tech-text">
-              Traditional static batching requires all requests in a batch to have the same length,
-              leading to wasted computation. vLLM's <strong className="text-cyan">iteration-level
-              dynamic batching</strong> solves this:
+              {tr.cbDesc}{' '}
+              <strong className="text-cyan">{lang === 'zh' ? '迭代级动态批处理' : 'iteration-level dynamic batching'}</strong>{tr.cbDesc2}
             </p>
-
             <ul className="tech-list">
-              <li>Requests of varying lengths are packed into a single iteration, eliminating padding overhead.</li>
-              <li><strong>Chunked Prefill:</strong> Long prompts are split into smaller chunks and scheduled
-                together with decode requests, preventing head-of-line blocking.</li>
-              <li><strong>Three scheduling strategies:</strong> FIFO, Shortest Job First (SJF), and
-                Earliest Deadline First (EDF) with automatic switching based on workload.</li>
-              <li>New requests can be dynamically added or removed mid-generation via the async engine.</li>
+              <li>{tr.cbItem1}</li>
+              <li><strong>{lang === 'zh' ? 'Chunked Prefill：' : 'Chunked Prefill: '}</strong>{tr.cbItem2}</li>
+              <li>{tr.cbItem3}</li>
+              <li>{tr.cbItem4}</li>
             </ul>
           </section>
 
-          {/* v1 Architecture */}
+          {/* ============ V1 ARCH ============ */}
           <section id="vllm-v1-arch" className="section tech-section">
-            <h3 className="tech-subtitle">v1 Architecture (Alpha, Jan 2025)</h3>
-
-            <p className="tech-text">
-              vLLM v1 is a major architectural overhaul that evolves vLLM from a dedicated
-              inference accelerator into a general-purpose serving infrastructure:
-            </p>
-
+            <h3 className="tech-subtitle">{tr.v1Title}</h3>
+            <p className="tech-text">{tr.v1Desc}</p>
             <ul className="tech-list">
-              <li><strong>Isolated EngineCore:</strong> "1+N" multi-process architecture with per-worker
-                GPU isolation for fault tolerance.</li>
-              <li><strong>Unified Scheduler:</strong> Token-level to sequence-level flexible scheduling
-                with speculative decoding support.</li>
-              <li><strong>Zero-overhead Prefix Caching:</strong> Pointer redirection instead of data copy;
-                cache hit rate improved from 37% to 89%.</li>
-              <li><strong>Performance gains:</strong> 7B model throughput: 1.2K &rarr; 2.1K tokens/s;
-                70B first-token latency: 320ms &rarr; 185ms.</li>
+              <li><strong>{lang === 'zh' ? '隔离的 EngineCore：' : 'Isolated EngineCore: '}</strong>{tr.v1Item1}</li>
+              <li><strong>{lang === 'zh' ? '统一调度器：' : 'Unified Scheduler: '}</strong>{tr.v1Item2}</li>
+              <li><strong>{lang === 'zh' ? '零开销前缀缓存：' : 'Zero-overhead Prefix Caching: '}</strong>{tr.v1Item3}</li>
+              <li><strong>{lang === 'zh' ? '性能提升：' : 'Performance gains: '}</strong>{tr.v1Item4}</li>
             </ul>
           </section>
 
-          {/* vLLM Performance */}
+          {/* ============ vLLM PERFORMANCE ============ */}
           <section id="vllm-performance" className="section tech-section">
-            <h3 className="tech-subtitle">Performance Benchmarks</h3>
-
+            <h3 className="tech-subtitle">{tr.vllmPerfTitle}</h3>
             <div className="tech-table-wrapper">
               <table className="tech-table">
                 <thead>
                   <tr>
-                    <th>Metric</th>
-                    <th>Traditional</th>
+                    <th>{lang === 'zh' ? '指标' : 'Metric'}</th>
+                    <th>{lang === 'zh' ? '传统方案' : 'Traditional'}</th>
                     <th>vLLM</th>
-                    <th>Improvement</th>
+                    <th>{lang === 'zh' ? '提升' : 'Improvement'}</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
-                    <td>GPU Utilization</td>
+                    <td>{lang === 'zh' ? 'GPU 利用率' : 'GPU Utilization'}</td>
                     <td>58%</td>
                     <td className="text-yellow">92%</td>
                     <td className="text-cyan">+58.6%</td>
                   </tr>
                   <tr>
-                    <td>P50 Latency</td>
+                    <td>P50 {lang === 'zh' ? '延迟' : 'Latency'}</td>
                     <td>125ms</td>
                     <td className="text-yellow">89ms</td>
                     <td className="text-cyan">-28.8%</td>
                   </tr>
                   <tr>
-                    <td>Max Throughput (QPS)</td>
+                    <td>{lang === 'zh' ? '最大吞吐量 (QPS)' : 'Max Throughput (QPS)'}</td>
                     <td>1,200</td>
                     <td className="text-yellow">3,200</td>
                     <td className="text-cyan">+166.7%</td>
                   </tr>
                   <tr>
-                    <td>Memory Fragmentation</td>
+                    <td>{lang === 'zh' ? '内存碎片率' : 'Memory Fragmentation'}</td>
                     <td>~65%</td>
                     <td className="text-yellow">&lt;5%</td>
-                    <td className="text-cyan">13x reduction</td>
+                    <td className="text-cyan">13x</td>
                   </tr>
                   <tr>
-                    <td>Throughput vs PyTorch</td>
+                    <td>{lang === 'zh' ? '相对 PyTorch 吞吐量' : 'Throughput vs PyTorch'}</td>
                     <td>1x</td>
                     <td className="text-yellow">4.7x</td>
                     <td className="text-cyan">4.7x</td>
@@ -218,25 +201,17 @@ function LlmTech() {
                 </tbody>
               </table>
             </div>
-
             <div className="tech-note">
-              <strong>Blackwell GPU (v0.7.3):</strong> FP8 throughput of 26,400 tokens/s
-              on 8-GPU configuration — 2.2x improvement over H100 baseline. First-token latency
-              reduced by 40% (45ms &rarr; 27ms).
+              <strong>Blackwell GPU (v0.7.3):</strong> {tr.vllmPerfNote}
             </div>
           </section>
 
-          {/* ============ LMCache ============ */}
+          {/* ============ LMCACHE INTRO ============ */}
           <section id="lmcache-intro" className="section tech-section">
-            <h2 className="section-title">LMCache: KV Cache Acceleration Layer</h2>
-
+            <h2 className="section-title">{tr.lmTitle}</h2>
             <p className="tech-text">
-              <strong>LMCache</strong> is an open-source KV cache layer purpose-built for
-              enterprise-scale LLM inference. It sits between inference engines and heterogeneous
-              storage tiers, reusing KV caches across requests to dramatically reduce
-              Time-to-First-Token (TTFT) and increase throughput.
+              <strong>LMCache</strong> {tr.lmDesc}
             </p>
-
             <div className="tech-meta">
               <a
                 href="https://github.com/LMCache/LMCache"
@@ -246,199 +221,135 @@ function LlmTech() {
               >
                 GitHub: LMCache/LMCache
               </a>
-              <span className="tech-version">MLSys 2026 Invited Talk</span>
+              <span className="tech-version">{tr.lmVersion}</span>
             </div>
           </section>
 
-          {/* LMCache Architecture */}
+          {/* ============ LMCACHE ARCH ============ */}
           <section id="lmcache-arch" className="section tech-section">
-            <h3 className="tech-subtitle">Three-Tier Hierarchical Cache Architecture</h3>
-
-            <p className="tech-text">
-              LMCache introduces a multi-level cache hierarchy that decouples computation from storage,
-              enabling KV cache capacity far beyond GPU memory limits:
-            </p>
-
+            <h3 className="tech-subtitle">{tr.lmArchTitle}</h3>
+            <p className="tech-text">{tr.lmArchDesc}</p>
             <div className="tech-table-wrapper">
               <table className="tech-table">
                 <thead>
                   <tr>
-                    <th>Tier</th>
-                    <th>Storage Medium</th>
-                    <th>Latency</th>
-                    <th>Typical Capacity</th>
-                    <th>Use Case</th>
+                    <th>{lang === 'zh' ? '层级' : 'Tier'}</th>
+                    <th>{lang === 'zh' ? '存储介质' : 'Storage Medium'}</th>
+                    <th>{lang === 'zh' ? '延迟' : 'Latency'}</th>
+                    <th>{lang === 'zh' ? '典型容量' : 'Typical Capacity'}</th>
+                    <th>{lang === 'zh' ? '用途' : 'Use Case'}</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
                     <td className="text-yellow">L1</td>
                     <td>GPU HBM</td>
-                    <td>Nanosecond</td>
+                    <td>{lang === 'zh' ? '纳秒级' : 'Nanosecond'}</td>
                     <td>8–128 GB</td>
-                    <td>Hot / frequently accessed</td>
+                    <td>{tr.lmArchTier1Use}</td>
                   </tr>
                   <tr>
                     <td className="text-cyan">L2</td>
                     <td>CPU DRAM</td>
-                    <td>Microsecond</td>
-                    <td>Up to 1 TB</td>
-                    <td>Warm / intermediate access</td>
+                    <td>{lang === 'zh' ? '微秒级' : 'Microsecond'}</td>
+                    <td>{lang === 'zh' ? '最大 1 TB' : 'Up to 1 TB'}</td>
+                    <td>{tr.lmArchTier2Use}</td>
                   </tr>
                   <tr>
                     <td>L3</td>
-                    <td>NVMe SSD / Remote</td>
-                    <td>Millisecond</td>
-                    <td>TB to PB scale</td>
-                    <td>Cold / infrequent access</td>
+                    <td>NVMe SSD / {lang === 'zh' ? '远程存储' : 'Remote'}</td>
+                    <td>{lang === 'zh' ? '毫秒级' : 'Millisecond'}</td>
+                    <td>{lang === 'zh' ? 'TB 至 PB 级' : 'TB to PB scale'}</td>
+                    <td>{tr.lmArchTier3Use}</td>
                   </tr>
                 </tbody>
               </table>
             </div>
-
             <p className="tech-text">
-              Smart eviction policies (LRU + LFU hybrid) automatically move data between tiers.
-              Cache loading speeds reach <span className="text-yellow">120 GB/s</span> — a 15x
-              improvement over naive approaches — by leveraging CUDA async copy, CUDA IPC,
-              and compute-I/O pipelining.
+              {tr.lmArchSpeedDesc}{' '}
+              <span className="text-yellow">120 GB/s</span>{tr.lmArchSpeedDesc2}
             </p>
           </section>
 
-          {/* LMCache Features */}
+          {/* ============ LMCACHE FEATURES ============ */}
           <section id="lmcache-features" className="section tech-section">
-            <h3 className="tech-subtitle">Key Features</h3>
-
+            <h3 className="tech-subtitle">{tr.lmFeatTitle}</h3>
             <div className="feature-grid">
-              <div className="feature-card">
-                <h4 className="feature-name">CacheBlend</h4>
-                <p className="feature-desc">
-                  Non-prefix KV cache reuse for any repeated text span regardless of position —
-                  dramatically improves cache hit rates in multi-turn conversations, RAG, and
-                  document-heavy workloads.
-                </p>
-              </div>
-
-              <div className="feature-card">
-                <h4 className="feature-name">CacheGen</h4>
-                <p className="feature-desc">
-                  Mixed compression strategies (FP16 quantization, ZSTD, sparse CSR, delta encoding)
-                  achieving ~4:1 compression while maintaining 99% accuracy.
-                </p>
-              </div>
-
-              <div className="feature-card">
-                <h4 className="feature-name">PD Disaggregation</h4>
-                <p className="feature-desc">
-                  Cross-engine KV cache transfer enables running prefill and decode phases on
-                  separate GPU pools for efficient resource allocation and throughput scaling.
-                </p>
-              </div>
-
-              <div className="feature-card">
-                <h4 className="feature-name">Cross-Engine Sharing</h4>
-                <p className="feature-desc">
-                  Peer-to-peer (P2P) cache sharing across vLLM instances and engines, supporting
-                  NIXL (network-attached cache transfer), GDS (GPU Direct Storage), and RDMA.
-                </p>
-              </div>
-
-              <div className="feature-card">
-                <h4 className="feature-name">Modular Connectors</h4>
-                <p className="feature-desc">
-                  Decoupled from engine evolution via KV cache connector architecture. Supports
-                  vLLM (V1/V2), SGLang, NVIDIA Dynamo, TRT-LLM, and Modular.
-                </p>
-              </div>
-
-              <div className="feature-card">
-                <h4 className="feature-name">Multimodal Cache</h4>
-                <p className="feature-desc">
-                  Supports caching vision-language model embeddings by hashing image-side tokens
-                  (mm_hashes), slashing TTFT and GPU memory for multimodal LLMs.
-                </p>
-              </div>
-
-              <div className="feature-card">
-                <h4 className="feature-name">Zero-Copy Data Movement</h4>
-                <p className="feature-desc">
-                  Minimizes KV cache loading latency from ~12ms to ~1.8ms on A100 GPUs using
-                  CUDA async operations and compute-I/O pipelining.
-                </p>
-              </div>
-
-              <div className="feature-card">
-                <h4 className="feature-name">K8s Native Operator</h4>
-                <p className="feature-desc">
-                  LMCache Operator (v0.1.1, May 2026) provides Kubernetes-native automated
-                  deployment, scaling, and management of cache resources.
-                </p>
-              </div>
+              {[
+                { name: tr.lmFeat1Name, desc: tr.lmFeat1Desc },
+                { name: tr.lmFeat2Name, desc: tr.lmFeat2Desc },
+                { name: tr.lmFeat3Name, desc: tr.lmFeat3Desc },
+                { name: tr.lmFeat4Name, desc: tr.lmFeat4Desc },
+                { name: tr.lmFeat5Name, desc: tr.lmFeat5Desc },
+                { name: tr.lmFeat6Name, desc: tr.lmFeat6Desc },
+                { name: tr.lmFeat7Name, desc: tr.lmFeat7Desc },
+                { name: tr.lmFeat8Name, desc: tr.lmFeat8Desc },
+              ].map(({ name, desc }) => (
+                <div key={name} className="feature-card">
+                  <h4 className="feature-name">{name}</h4>
+                  <p className="feature-desc">{desc}</p>
+                </div>
+              ))}
             </div>
           </section>
 
-          {/* LMCache Performance */}
+          {/* ============ LMCACHE PERFORMANCE ============ */}
           <section id="lmcache-performance" className="section tech-section">
-            <h3 className="tech-subtitle">Performance Benchmarks</h3>
-
+            <h3 className="tech-subtitle">{tr.lmPerfTitle}</h3>
             <div className="tech-table-wrapper">
               <table className="tech-table">
                 <thead>
                   <tr>
-                    <th>Scenario</th>
-                    <th>Improvement</th>
-                    <th>Details</th>
+                    <th>{lang === 'zh' ? '场景' : 'Scenario'}</th>
+                    <th>{lang === 'zh' ? '提升' : 'Improvement'}</th>
+                    <th>{lang === 'zh' ? '说明' : 'Details'}</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
-                    <td>General Throughput</td>
+                    <td>{tr.lmPerfRow1Scene}</td>
                     <td className="text-yellow">3&ndash;10x</td>
-                    <td>With vLLM integration across workloads</td>
+                    <td>{tr.lmPerfRow1Detail}</td>
                   </tr>
                   <tr>
-                    <td>Extreme Throughput</td>
-                    <td className="text-yellow">Up to 15x</td>
-                    <td>Multi-round QA and document analysis</td>
+                    <td>{tr.lmPerfRow2Scene}</td>
+                    <td className="text-yellow">{lang === 'zh' ? '最高 15x' : 'Up to 15x'}</td>
+                    <td>{tr.lmPerfRow2Detail}</td>
                   </tr>
                   <tr>
-                    <td>TTFT Reduction</td>
+                    <td>{tr.lmPerfRow3Scene}</td>
                     <td className="text-yellow">62&ndash;65%</td>
-                    <td>~1.16s &rarr; ~0.44s on long-context scenarios</td>
+                    <td>{tr.lmPerfRow3Detail}</td>
                   </tr>
                   <tr>
-                    <td>Total Request Latency</td>
-                    <td className="text-yellow">54% reduction</td>
-                    <td>52.98s &rarr; 24.27s on 460K-token workloads</td>
+                    <td>{tr.lmPerfRow4Scene}</td>
+                    <td className="text-yellow">{lang === 'zh' ? '降低 54%' : '54% reduction'}</td>
+                    <td>{tr.lmPerfRow4Detail}</td>
                   </tr>
                   <tr>
-                    <td>GPU Memory Savings</td>
+                    <td>{tr.lmPerfRow5Scene}</td>
                     <td className="text-yellow">40&ndash;70%</td>
-                    <td>By offloading reusable KV caches</td>
+                    <td>{tr.lmPerfRow5Detail}</td>
                   </tr>
                   <tr>
-                    <td>Cache Hit Rate</td>
+                    <td>{tr.lmPerfRow6Scene}</td>
                     <td className="text-yellow">75&ndash;92%</td>
-                    <td>In conversational and RAG scenarios</td>
+                    <td>{tr.lmPerfRow6Detail}</td>
                   </tr>
                 </tbody>
               </table>
             </div>
           </section>
 
-          {/* LMCache Integration */}
+          {/* ============ INTEGRATION ============ */}
           <section id="lmcache-integration" className="section tech-section">
-            <h3 className="tech-subtitle">Integration with vLLM</h3>
-
-            <p className="tech-text">
-              LMCache integrates seamlessly with vLLM through a connector-based architecture.
-              A typical deployment configuration:
-            </p>
-
+            <h3 className="tech-subtitle">{tr.lmIntTitle}</h3>
+            <p className="tech-text">{tr.lmIntDesc}</p>
             <div className="code-block">
               <pre>{`# cache_config.yaml
 cache_strategy:
   chunk_size: 64          # 32-128 tokens
-  compression: true       # ZSTD, ~40-60% reduction
+  compression: true       # ZSTD, ~40-60% ${lang === 'zh' ? '压缩比' : 'reduction'}
   tiered_storage:
     - type: gpu
       size_gb: 16
@@ -448,71 +359,66 @@ cache_strategy:
       path: /tmp/lmcache
       size_gb: 1024
 
-# Launch vLLM with LMCache
+# ${lang === 'zh' ? '使用 LMCache 启动 vLLM' : 'Launch vLLM with LMCache'}
 LMCACHE_CONFIG=/path/to/cache_config.yaml \\
 vllm serve /models/qwen-14b \\
   --gpu_memory_utilization 0.85 \\
   --kv-transfer-config '{"kv_connector":"LMCacheConnectorV2","kv_role":"kv_both"}'`}</pre>
             </div>
-
             <p className="tech-text">
-              <strong>Supported inference engines:</strong> vLLM (primary, V1 & V2 connector),
-              SGLang, NVIDIA Dynamo, TRT-LLM, Modular, AWS LMI.
+              <strong>{tr.lmIntEngines}</strong>{tr.lmIntEnginesList}
             </p>
-
             <p className="tech-text">
-              <strong>Production users:</strong> Google Cloud, AWS, CoreWeave, GMI Cloud,
-              Tencent, AMD, NVIDIA, IBM, and 30+ companies.
+              <strong>{tr.lmIntUsers}</strong>{tr.lmIntUsersList}
             </p>
           </section>
 
-          {/* References */}
+          {/* ============ REFERENCES ============ */}
           <section id="references" className="section tech-section">
-            <h2 className="section-title">References & Resources</h2>
-
+            <h2 className="section-title">{tr.refTitle}</h2>
             <ul className="ref-list">
               <li>
                 <a href="https://github.com/vllm-project/vllm" target="_blank" rel="noopener noreferrer">
-                  vLLM GitHub Repository
+                  {tr.ref1}
                 </a>
-                <span className="ref-desc">— Official repository for the vLLM inference engine</span>
+                <span className="ref-desc">{tr.ref1desc}</span>
               </li>
               <li>
                 <a href="https://github.com/LMCache/LMCache" target="_blank" rel="noopener noreferrer">
-                  LMCache GitHub Repository
+                  {tr.ref2}
                 </a>
-                <span className="ref-desc">— Official repository for the LMCache KV cache layer</span>
+                <span className="ref-desc">{tr.ref2desc}</span>
               </li>
               <li>
                 <a href="https://docs.vllm.ai/" target="_blank" rel="noopener noreferrer">
-                  vLLM Documentation
+                  {tr.ref3}
                 </a>
-                <span className="ref-desc">— Official documentation and user guides</span>
+                <span className="ref-desc">{tr.ref3desc}</span>
               </li>
               <li>
                 <a href="https://blog.lmcache.ai/" target="_blank" rel="noopener noreferrer">
-                  LMCache Blog
+                  {tr.ref4}
                 </a>
-                <span className="ref-desc">— Technical blog with latest features and benchmarks</span>
+                <span className="ref-desc">{tr.ref4desc}</span>
               </li>
               <li>
                 <a href="https://arxiv.org/abs/2510.09665" target="_blank" rel="noopener noreferrer">
-                  LMCache Paper (arXiv:2510.09665)
+                  {tr.ref5}
                 </a>
-                <span className="ref-desc">— Y. Cheng, Y. Liu et al., Oct 2025</span>
+                <span className="ref-desc">{tr.ref5desc}</span>
               </li>
               <li>
                 <a href="https://mlsys.org/virtual/2026/invited-talk/3646" target="_blank" rel="noopener noreferrer">
-                  MLSys 2026 Invited Talk
+                  {tr.ref6}
                 </a>
-                <span className="ref-desc">— LMCache: An Efficient KV Cache Layer for Enterprise-Scale LLM Inference</span>
+                <span className="ref-desc">{tr.ref6desc}</span>
               </li>
             </ul>
           </section>
 
           <div className="footer-decoration">
             <div className="deco-line" />
-            <p className="deco-text">Wake the fuck up, samurai. We have a city to burn.</p>
+            <p className="deco-text">{lang === 'zh' ? '醒醒吧，武士。我们有一座城市要烧掉。' : 'Wake the fuck up, samurai. We have a city to burn.'}</p>
           </div>
         </main>
       </div>
