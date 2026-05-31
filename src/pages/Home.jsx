@@ -10,8 +10,8 @@ function Home() {
   const tr = t[lang].home
 
   const researchAreas = [
-    { label: '无线网络', to: null },
-    { label: '物联网', to: null },
+    { label: '无线网络', to: '/sa2-tech' },
+    { label: '物联网', to: '/iot-tech' },
     { label: '大模型', to: '/llm-tech' },
     { label: '通算协同', to: null },
   ]

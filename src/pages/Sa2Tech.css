@@ -1,0 +1,362 @@
+/* ===== SA2 TECH PAGE — shared layout styles (consistent with LlmTech) ===== */
+
+.tech-layout {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  min-height: 100svh;
+}
+
+/* ===== SIDEBAR ===== */
+.tech-sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 240px;
+  height: 100svh;
+  background: rgba(10, 10, 15, 0.95);
+  border-right: 1px solid var(--cyber-border);
+  backdrop-filter: blur(16px);
+  z-index: 100;
+  overflow-y: auto;
+  transition: transform 0.3s ease;
+}
+
+.sidebar-inner {
+  padding: 28px 20px;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--cyber-cyan);
+  letter-spacing: 0.2em;
+  text-decoration: none;
+  padding: 6px 14px;
+  border: 1px solid var(--cyber-cyan);
+  margin-bottom: 24px;
+  transition: all 0.3s ease;
+  clip-path: polygon(0 4px, 4px 0, 100% 0, 100% calc(100% - 4px), calc(100% - 4px) 100%, 0 100%);
+}
+
+.back-link:hover {
+  background: rgba(0, 240, 255, 0.1);
+  box-shadow: var(--cyber-glow-cyan);
+}
+
+.top-back-link {
+  display: none;
+  margin-bottom: 20px;
+}
+
+.toc-heading {
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--cyber-text-dim);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(252, 238, 9, 0.1);
+}
+
+.toc-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.toc-link {
+  display: block;
+  width: 100%;
+  text-align: left;
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--cyber-text-dim);
+  background: none;
+  border: none;
+  padding: 7px 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-radius: 2px;
+  letter-spacing: 0.03em;
+}
+
+.toc-link:hover {
+  color: var(--cyber-yellow);
+  background: rgba(252, 238, 9, 0.06);
+}
+
+.toc-main {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--cyber-text);
+}
+
+.toc-sub {
+  font-size: 13px;
+  padding-left: 24px;
+  font-weight: 500;
+}
+
+/* ===== MOBILE TOGGLE ===== */
+.toc-toggle {
+  display: none;
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  z-index: 200;
+  width: 40px;
+  height: 40px;
+  background: rgba(10, 10, 15, 0.9);
+  border: 1px solid var(--cyber-border);
+  cursor: pointer;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 8px;
+  backdrop-filter: blur(8px);
+}
+
+.toc-toggle-bar {
+  display: block;
+  width: 20px;
+  height: 2px;
+  background: var(--cyber-yellow);
+  box-shadow: var(--cyber-glow-yellow);
+  transition: all 0.2s ease;
+}
+
+/* ===== SIDEBAR OVERLAY (mobile) ===== */
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 99;
+}
+
+/* ===== MAIN CONTENT ===== */
+.tech-content {
+  margin-left: 240px;
+  flex: 1;
+  max-width: 860px;
+  padding: 40px 36px 60px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.tech-section {
+  scroll-margin-top: 24px;
+}
+
+/* ===== TYPOGRAPHY ===== */
+.tech-intro {
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 1.7;
+  color: var(--cyber-text);
+}
+
+.tech-text {
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.75;
+  color: var(--cyber-text);
+  margin-bottom: 12px;
+}
+
+.tech-text:last-child {
+  margin-bottom: 0;
+}
+
+.text-yellow {
+  color: var(--cyber-yellow);
+}
+
+.text-cyan {
+  color: var(--cyber-cyan);
+}
+
+/* ===== LISTS ===== */
+.tech-list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.tech-list li {
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--cyber-text);
+  padding-left: 20px;
+  position: relative;
+}
+
+.tech-list li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 9px;
+  width: 6px;
+  height: 6px;
+  background: var(--cyber-yellow);
+  transform: rotate(45deg);
+  box-shadow: 0 0 4px rgba(252, 238, 9, 0.5);
+}
+
+/* ===== TABLES ===== */
+.tech-table-wrapper {
+  overflow-x: auto;
+  margin: 16px 0 20px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.tech-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-body);
+  font-size: 14px;
+}
+
+.tech-table thead {
+  border-bottom: 2px solid var(--cyber-yellow);
+}
+
+.tech-table th {
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--cyber-cyan);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 12px 14px;
+  text-align: left;
+  text-shadow: var(--cyber-glow-cyan);
+}
+
+.tech-table td {
+  padding: 10px 14px;
+  color: var(--cyber-text);
+  border-bottom: 1px solid rgba(252, 238, 9, 0.06);
+  vertical-align: top;
+}
+
+.tech-table tbody tr:hover {
+  background: rgba(252, 238, 9, 0.03);
+}
+
+/* ===== REFERENCE LIST ===== */
+.ref-list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.ref-list li {
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.ref-list a {
+  color: var(--cyber-cyan);
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.ref-list a:hover {
+  color: var(--cyber-yellow);
+  text-shadow: 0 0 6px rgba(252, 238, 9, 0.4);
+}
+
+.ref-desc {
+  color: var(--cyber-text-dim);
+  margin-left: 4px;
+}
+
+/* ===== SCROLLBAR ===== */
+.tech-sidebar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.tech-sidebar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.tech-sidebar::-webkit-scrollbar-thumb {
+  background: rgba(252, 238, 9, 0.2);
+}
+
+.tech-sidebar::-webkit-scrollbar-thumb:hover {
+  background: rgba(252, 238, 9, 0.4);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1024px) {
+  .tech-sidebar {
+    transform: translateX(-100%);
+  }
+
+  .tech-sidebar.open {
+    transform: translateX(0);
+  }
+
+  .sidebar-overlay {
+    display: block;
+  }
+
+  .toc-toggle {
+    display: flex;
+  }
+
+  .tech-content {
+    margin-left: 0;
+    padding: 24px 20px 48px;
+    gap: 20px;
+  }
+
+  .top-back-link {
+    display: inline-flex;
+  }
+
+  .tech-text {
+    font-size: 15px;
+  }
+
+  .tech-table {
+    font-size: 13px;
+  }
+
+  .tech-table th,
+  .tech-table td {
+    padding: 8px 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .tech-content {
+    padding: 20px 14px 36px;
+    gap: 16px;
+  }
+
+  .tech-list li {
+    font-size: 14px;
+  }
+
+  .ref-list li {
+    font-size: 14px;
+  }
+}
